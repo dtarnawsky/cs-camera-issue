@@ -10,12 +10,24 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
   imports: [IonicModule],
 })
 export class HomePage {
+
+  busy = false;
+  message = '';
   constructor() { }
 
   async getPhoto() {
-    const result = await Camera.getPhoto({
-      source: CameraSource.Photos,
-      resultType: CameraResultType.Uri,
-    });
+    try {
+      this.busy = true;
+      this.message = '';
+      const result = await Camera.getPhoto({
+        source: CameraSource.Photos,
+        resultType: CameraResultType.Uri,
+      });
+      this.busy = false;
+    }
+    catch (error) {
+      this.busy = false;
+      this.message = error as string;
+    }
   }
 }
